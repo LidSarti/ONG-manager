@@ -1,0 +1,33 @@
+name: Build and Deploy to Railway
+
+on:
+  push:
+    branches: [ master ]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout código
+      uses: actions/checkout@v3
+
+    - name: Login no Docker Hub
+      run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
+
+    - name: Build da imagem
+      run: docker build -t ${{ secrets.DOCKER_USERNAME }}/ong-manager:latest .
+
+    - name: Push para o Docker Hub
+      run: docker push ${{ secrets.DOCKER_USERNAME }}/ong-manager:latest
+
+    - name: Deploy para Railway
+      run: |
+        curl -X POST https://backboard.railway.app/deploy/webhook/docker \
+        -H "Content-Type: application/json" \
+        -d '{
+          "projectId": "${{ secrets.RAILWAY_PROJECT_ID }}",
+          "serviceName": "web",  # Altere se seu serviço tem outro nome
+          "dockerImage": "${{ secrets.DOCKER_USERNAME }}/ong-manager:latest"
+        }' \
+        -H "Authorization: Bearer ${{ secrets.RAILWAY_DEPLOY_TOKEN }}"
