@@ -1,5 +1,5 @@
 ﻿<!DOCTYPE html>
-<html lang="en">
+<html lang="pt-br">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -13,6 +13,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    @await RenderSectionAsync("Styles", required: false)
 </head>
 <body>
     <header>
@@ -27,10 +28,21 @@
                         <img src="~/assets/perfil 1.png" alt="">
                     </a>
                     <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdown">
-                        <li><a asp-controller="CadastroUsuarios" asp-action="Login" class="dropdown-item">Entrar</a></li>
-                        <li><a asp-action="Create" class="dropdown-item">Cadastrar Animal</a></li>
-                        <li><a asp-controller="CadastroUsuarios" asp-action="Index" class="dropdown-item">Gerenciar Usuários</a></li>
-                        <li><a asp-controller="Ong" asp-action="Edit" class="dropdown-item">Gerenciar ONG</a></li>
+                        @if (User.Identity.IsAuthenticated)
+                        {
+                            <li><a asp-action="Create" class="dropdown-item">Cadastrar Animal</a></li>
+                            <li><a asp-controller="CadastroUsuarios" asp-action="Index" class="dropdown-item">Gerenciar Usuários</a></li>
+                            <li><a asp-controller="Ong" asp-action="Edit" class="dropdown-item">Gerenciar ONG</a></li>
+                            <li>
+                                <form method="post" asp-controller="CadastroUsuarios" asp-action="Logout">
+                                    <button type="submit" class="dropdown-item">Sair</button>
+                                </form>
+                            </li>
+                        }
+                        else
+                        {
+                            <li><a asp-controller="CadastroUsuarios" asp-action="Login" class="dropdown-item">Entrar</a></li>
+                        }
                     </ul>
                 </div>
             </div>
@@ -43,25 +55,28 @@
         </main>
     </div>
 
-     <footer class="bg-secondary-color footer">
-        <div class="d-flex justify-content-center align-items-center">
-            <div class="d-flex flex-column">
-            <p>Fale Conosco:</p>
-            <div class="footer-contact d-flex">
-                <a href=""><img src="~/assets/facebook.png" alt=""></a>
-                <a href="">Aaano</a>
+    @if (ViewData["HideFooter"] == null)
+    {
+        <footer class="bg-secondary-color footer">
+            <div class="d-flex justify-content-center align-items-center">
+                <div class="d-flex flex-column">
+                    <p>Fale Conosco:</p>
+                    <div class="footer-contact d-flex">
+                        <a href=""><img src="~/assets/facebook.png" alt=""></a>
+                        <a href="">Aaano</a>
+                    </div>
+                    <div class="footer-contact d-flex">
+                        <a href=""><img src="~/assets/telefone.png" alt=""></a>
+                        <a href="">(19) 99999-9999</a>
+                    </div>
+                    <div class="footer-contact d-flex">
+                        <a href=""><img src="~/assets/instagram.png" alt=""></a>
+                        <a href="">Aaano</a>
+                    </div>
+                </div>
             </div>
-            <div class="footer-contact d-flex">
-                <a href=""><img src="~/assets/telefone.png" alt=""></a>
-                <a href="">(19) 99999-9999</a>
-            </div>
-            <div class="footer-contact d-flex">
-                <a href=""><img src="~/assets/instagram.png" alt=""></a>
-                <a href="">Aaano</a>
-            </div>
-        </div>
-        </div>
-    </footer> 
+        </footer>
+    }
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
