@@ -78,14 +78,19 @@ namespace ONGManager.Controllers
         [HttpGet]
         public async Task<IActionResult> Details(int id)
         {
-            var animal = await _ongDbContext.cadastro_animal
-                .Include(a => a.Imagens)
-                .FirstOrDefaultAsync(a => a.id == id);
+            if (ModelState.IsValid)
+            {
+                var animal = await _ongDbContext.cadastro_animal
+                 .Include(a => a.Imagens)
+                 .FirstOrDefaultAsync(a => a.id == id);
 
-            if (animal != null)
-                return View(animal);
+                if (animal != null)
+                    return View(animal);
 
-            return NotFound();
+                return NotFound();
+            }
+
+            return BadRequest();
         }
 
         [HttpGet]
@@ -125,21 +130,26 @@ namespace ONGManager.Controllers
         [Authorize]
         public async Task<IActionResult> Edit(int id)
         {
-            var animal = await _ongDbContext.cadastro_animal
+            if (ModelState.IsValid)
+            {
+                var animal = await _ongDbContext.cadastro_animal
                 .Include(c => c.TipoAnimal)
                 .Include(c => c.Porte)
                 .Include(a => a.Imagens) // Adicionado
                 .FirstOrDefaultAsync(a => a.id == id);
 
-            if (animal != null)
-            {
-                ViewBag.TipoAnimal = new SelectList(_ongDbContext.tipo_animal, "id", "animal");
-                ViewBag.Porte = new SelectList(_ongDbContext.porte, "id", "porte");
+                if (animal != null)
+                {
+                    ViewBag.TipoAnimal = new SelectList(_ongDbContext.tipo_animal, "id", "animal");
+                    ViewBag.Porte = new SelectList(_ongDbContext.porte, "id", "porte");
 
-                return View(animal);
+                    return View(animal);
+                }
+
+                return NotFound();
             }
 
-            return NotFound();
+            return BadRequest();
         }
 
         [HttpPost]
@@ -184,23 +194,28 @@ namespace ONGManager.Controllers
         [Authorize]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var animal = await _ongDbContext.cadastro_animal.FindAsync(id);
-
-            if (animal != null)
+            if (ModelState.IsValid)
             {
-                try
+                var animal = await _ongDbContext.cadastro_animal.FindAsync(id);
+
+                if (animal != null)
                 {
-                    _ongDbContext.cadastro_animal.Remove(animal);
-                    await _ongDbContext.SaveChangesAsync();
-                    return RedirectToAction(nameof(Index));
+                    try
+                    {
+                        _ongDbContext.cadastro_animal.Remove(animal);
+                        await _ongDbContext.SaveChangesAsync();
+                        return RedirectToAction(nameof(Index));
+                    }
+                    catch (Exception ex)
+                    {
+                        System.Console.WriteLine("Ocorreu o seguinte erro ao tentar excluir o cadastro do animal: " + ex.Message.ToString());
+                    }
                 }
-                catch (Exception ex)
-                {
-                    System.Console.WriteLine("Ocorreu o seguinte erro ao tentar excluir o cadastro do animal: " + ex.Message.ToString());
-                }
+
+                return NotFound();
             }
 
-            return NotFound();
+            return BadRequest();
         }
 
     }

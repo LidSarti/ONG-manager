@@ -59,8 +59,8 @@ namespace ONGManager.Controllers
             {
                 try
                 {
-                    var usuario = _ongDbContext.usuario
-                        .FirstOrDefault(u => u.usuario == usuariosModel.usuario);
+                    var usuario = await _ongDbContext.usuario
+                        .FirstOrDefaultAsync(u => u.usuario == usuariosModel.usuario);
 
                     if (usuario == null)
                         return Unauthorized();
@@ -109,29 +109,35 @@ namespace ONGManager.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Edit(int? id, int nivel)
+        public async Task<IActionResult> Edit(int? id, int? nivel)
         {
-            if (id == null)
+            if (ModelState.IsValid)
             {
-                return NotFound();
+                if (id == null || nivel == null)
+                {
+                    return NotFound();
+                }
+
+                var usuario = await _ongDbContext.usuario.FindAsync(id);
+
+                if (usuario == null)
+                {
+                    return NotFound();
+                }
+
+                var niveis = await _ongDbContext.niveis_acesso.ToListAsync();
+
+                ViewBag.NiveisAcesso = niveis.Select(n => new SelectListItem
+                {
+                    Value = n.id.ToString(),
+                    Text = n.nivel,
+                    Selected = n.id == usuario.nivel
+                }).ToList();
+
+                return View(usuario);
             }
-
-            var usuario = await _ongDbContext.usuario.FindAsync(id);
-            if (usuario == null)
-            {
-                return NotFound();
-            }
-            var niveis = await _ongDbContext.niveis_acesso.ToListAsync();
-
-
-            ViewBag.NiveisAcesso = niveis.Select(n => new SelectListItem
-            {
-                Value = n.id.ToString(),
-                Text = n.nivel,
-                Selected = n.id == usuario.nivel
-            }).ToList();
-
-            return View(usuario);
+            
+            return BadRequest();
         }
 
         [HttpPost]
@@ -147,7 +153,6 @@ namespace ONGManager.Controllers
             {
                 try
                 {
-                    // Atualiza diretamente o modelo recebido do front-end
                     _ongDbContext.Update(usuarioModel);
                     await _ongDbContext.SaveChangesAsync();
 
@@ -162,7 +167,7 @@ namespace ONGManager.Controllers
                     }
                     else
                     {
-                        System.Console.WriteLine("", "O registro foi modificado por outro usuário. Por favor, recarregue e tente novamente." + ex.Message.ToString());
+                        System.Console.WriteLine("Ocorreu o seguinte erro ao editar o usuário: " + ex.Message.ToString());
                         return View(usuarioModel);
                     }
                 }
@@ -175,13 +180,18 @@ namespace ONGManager.Controllers
         [Authorize]
         public async Task<IActionResult> Delete(int id)
         {
-            var usuario = await _ongDbContext.usuario.FindAsync(id);
-            if (usuario == null)
+            if (ModelState.IsValid)
             {
-                return NotFound();
+                var usuario = await _ongDbContext.usuario.FindAsync(id);
+                if (usuario == null)
+                {
+                    return NotFound();
+                }
+
+                return View(usuario);
             }
 
-            return View(usuario);
+            return BadRequest();
         }
 
 
@@ -189,22 +199,27 @@ namespace ONGManager.Controllers
         [Authorize]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var usuario = await _ongDbContext.usuario.FindAsync(id);
-            if (usuario != null)
+            if (ModelState.IsValid)
             {
-                try
+                var usuario = await _ongDbContext.usuario.FindAsync(id);
+                if (usuario != null)
                 {
-                    _ongDbContext.usuario.Remove(usuario);
-                    await _ongDbContext.SaveChangesAsync();
-                    return RedirectToAction(nameof(Index));
+                    try
+                    {
+                        _ongDbContext.usuario.Remove(usuario);
+                        await _ongDbContext.SaveChangesAsync();
+                        return RedirectToAction(nameof(Index));
+                    }
+                    catch (Exception ex)
+                    {
+                        System.Console.WriteLine("Ocorreu o seguinte erro ao tentar excluir o usuário: " + ex.Message.ToString());
+                    }
                 }
-                catch (Exception ex)
-                {
-                    System.Console.WriteLine("Ocorreu o seguinte erro ao tentar excluir o usuário: " + ex.Message.ToString());
-                }
+
+                return View(usuario);
             }
 
-            return View(usuario);
+            return BadRequest();
         }
 
         private bool UsuarioExists(int id)
