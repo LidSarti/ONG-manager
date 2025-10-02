@@ -4,7 +4,7 @@ namespace ONGManager.Models;
 
 public class ONG
 {
-    public int id { get; set; }
+    public int id { get; set; } = 0;
     public string nome_ong { get; set; } = string.Empty;
     public string cidade { get; set; } = string.Empty;
     public string estado { get; set; } = string.Empty;

@@ -1,10 +1,7 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using ONGManager.Data;
-using ONGManager.Data.DTOs;
 using ONGManager.Models;
 using Supabase;
-using System.Text.Json;
 
 namespace ONGManager.Services;
 
@@ -41,13 +38,9 @@ public class ImagemService
                 .From(BucketName)
                 .Upload(fileBytes, fileName);
 
-            //Console.WriteLine($"Resposta do Supabase: {JsonSerializer.Serialize(response)}");
-
             var publicUrl = _supabase.Storage
                 .From(BucketName)
                 .GetPublicUrl(fileName);
-
-            //Console.WriteLine($"URL pública gerada: {publicUrl}");
 
             var imagem = new Imagem
             {

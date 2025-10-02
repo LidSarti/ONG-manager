@@ -24,9 +24,9 @@
                     <a class="logo-text fw-bold navbar-brand" asp-area="" asp-controller="CadastroAnimais" asp-action="Index">Adote</a>
                 </div>
                 <div class="dropdown">
-                    <a href="#" class="btn dropdown-toggle text-dark" role="button" id="dropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                    <button class="btn dropdown-toggle text-dark" id="dropdown" data-bs-toggle="dropdown" aria-expanded="false" type="button">
                         <img src="~/assets/perfil 1.png" alt="">
-                    </a>
+                    </button>
                     <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdown">
                         @if (User.Identity.IsAuthenticated)
                         {

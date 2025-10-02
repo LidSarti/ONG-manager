@@ -9,58 +9,65 @@
     <form asp-action="Create" method="post">
         <div class="row g-5">
             <div class="col-md-6">
-                <div class="mb-3">
-                    <label asp-for="nome" class="form-label">Nome:</label>
-                    <input asp-for="nome" type="text" class="form-control" placeholder="Nome">
+                <div class="mb-12">
+                    <label asp-for="nome" class="form-label w-100">
+                        Nome:
+                        <input asp-for="nome" class="form-control" placeholder="Nome">
+                    </label>
                     <span asp-validation-for="nome" class="text-danger"></span>
                 </div>
 
                 <div class="mb-3">
-                    <label asp-for="raca" class="form-label">Ra�a:</label>
-                    <input asp-for="raca" type="text" class="form-control" placeholder="Ra�a">
+                    <label asp-for="raca" class="form-label w-100">Raça:
+                        <input asp-for="raca" class="form-control" placeholder="Raça">
+                    </label>
                     <span asp-validation-for="raca" class="text-danger"></span>
                 </div>
 
                 <div class="mb-3">
-                    <label asp-for="idade" class="form-label">Idade:</label>
-                    <input asp-for="idade" type="number" class="form-control" placeholder="Idade">
+                    <label asp-for="idade" class="form-label w-100">Idade:
+                        <input asp-for="idade" class="form-control" placeholder="Idade">
+                    </label>
                     <span asp-validation-for="idade" class="text-danger"></span>
                 </div>
 
                 <div class="mb-3">
-                    <label asp-for="cidade" class="form-label">Cidade:</label>
-                    <input asp-for="cidade" type="text" class="form-control" placeholder="Cidade">
+                    <label asp-for="cidade" class="form-label w-100">Cidade:
+                        <input asp-for="cidade" class="form-control" placeholder="Cidade">
+                    </label>
                     <span asp-validation-for="cidade" class="text-danger"></span>
                 </div>
 
                 <div class="mb-3">
-                    <label asp-for="estado" class="form-label">Estado:</label>
-                    <input asp-for="estado" type="text" class="form-control" placeholder="Estado">
+                    <label asp-for="estado" class="form-label w-100">Estado:
+                        <input asp-for="estado" class="form-control" placeholder="Estado">
+                    </label>
                     <span asp-validation-for="estado" class="text-danger"></span>
                 </div>
 
                 <div class="mb-4">
-                    <label asp-for="tipo_animal" class="form-label">Tipo:</label>
-                    <div class="d-flex gap-4">
-                        <div class="form-check d-flex align-items-center gap-2">
-                            <input asp-for="tipo_animal" class="form-check-input" type="radio" value="1">
-                            <label class="form-check-label" for="tipoAnimal">
-                                <img src="/assets/icone cachorro.png" alt="Cachorro" style="width: 24px;"> Cachorro
-                            </label>
+                    <label asp-for="tipo_animal" class="form-label">Tipo:
+                        <div class="d-flex gap-4">
+                            <div class="form-check d-flex align-items-center gap-2">
+                                <input asp-for="tipo_animal" class="form-check-input" type="radio" value="1">
+                                <label class="form-check-label" for="tipoAnimal">
+                                    <img src="/assets/icone cachorro.png" alt="Cachorro" style="width: 24px;"> Cachorro
+                                </label>
+                            </div>
+                            <div class="form-check d-flex align-items-center gap-2">
+                                <input asp-for="tipo_animal" class="form-check-input" type="radio" value="2">
+                                <label class="form-check-label" for="tipoAnimal">
+                                    <img src="/assets/icone gato.png" alt="Gato" style="width: 24px;"> Gato
+                                </label>
+                            </div>
+                            <div class="form-check d-flex align-items-center gap-2">
+                                <input asp-for="tipo_animal" class="form-check-input" type="radio" value="3">
+                                <label class="form-check-label" for="tipoAnimal">
+                                    <img src="/assets/icone animais.png" alt="outro" style="width: 24px;"> Outro
+                                </label>
+                            </div>
                         </div>
-                        <div class="form-check d-flex align-items-center gap-2">
-                            <input asp-for="tipo_animal" class="form-check-input" type="radio" value="2">
-                            <label class="form-check-label" for="tipoAnimal">
-                                <img src="/assets/icone gato.png" alt="Gato" style="width: 24px;"> Gato
-                            </label>
-                        </div>
-                        <div class="form-check d-flex align-items-center gap-2">
-                            <input asp-for="tipo_animal" class="form-check-input" type="radio" value="3">
-                            <label class="form-check-label" for="tipoAnimal">
-                                <img src="/assets/icone animais.png" alt="outro" style="width: 24px;"> Outro
-                            </label>
-                        </div>
-                    </div>
+                    </label>
                     <span asp-validation-for="tipo_animal" class="text-danger"></span>
                 </div>
             </div>
@@ -69,28 +76,31 @@
             <!-- Coluna Direita -->
             <div class="col-md-6">
                 <div class="mb-3">
-                    <label asp-for="porte_animal" class="form-label">Porte Animal:</label>
-                    <select asp-for="porte_animal" class="form-control" asp-items="ViewBag.Porte"></select>
+                    <label asp-for="porte_animal" class="form-label w-100">Porte Animal:
+                        <select asp-for="porte_animal" class="form-control" asp-items="ViewBag.Porte"></select>
+                    </label>
                     <span asp-validation-for="porte_animal" class="text-danger"></span>
                 </div>
                 <div class="mb-3">
-                <label class="form-label">Foto:</label>
-                <div class="d-flex align-items-center gap-3">
-                    <div style="width: 100px; height: 100px; background-color: #eee; display: flex; align-items: center; justify-content: center;">
-                        <img src="/assets/fotoPet.png" alt="Foto" style="width: 75px;">
-                    </div>
-                    <div>
-                        <button type="button" class="btn btn-light rounded-pill px-4">
-                            <i class="bi bi-upload"></i> Upload
-                        </button>
-                        <div class="small text-muted mt-2">Recomendamos que seja pelo menos 720x720</div>
-                    </div>
-                </div>
+                    <label class="form-label">Foto:
+                        <div class="d-flex align-items-center gap-3">
+                            <div style="width: 100px; height: 100px; background-color: #eee; display: flex; align-items: center; justify-content: center;">
+                                <img src="/assets/fotoPet.png" alt="Foto" style="width: 75px;">
+                            </div>
+                            <div>
+                                <button type="button" class="btn btn-light rounded-pill px-4">
+                                    <i class="bi bi-upload"></i> Upload
+                                </button>
+                                <div class="small text-muted mt-2">Recomendamos que seja pelo menos 720x720</div>
+                            </div>
+                        </div>
+                    </label>
                 </div>
 
                 <div class="mb-4">
-                    <label for="Biografia" class="form-label">Biografia</label>
-                    <textarea asp-for="biografia" class="form-control" id="Biografia" rows="5" placeholder="Biografia"></textarea>
+                    <label for="Biografia" class="form-label w-100">Biografia
+                        <textarea asp-for="biografia" class="form-control" id="Biografia" rows="5" placeholder="Biografia"></textarea>
+                    </label>
                 </div>
             </div>
         </div>

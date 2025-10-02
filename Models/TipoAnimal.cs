@@ -5,7 +5,7 @@ public class TipoAnimal
 {
     [Key]
     [Required]
-    public int id { get; set; }
+    public int id { get; set; } = 0;
     [Required]
     public string animal { get; set; } = string.Empty;
     public ICollection<CadastroAnimal> Animais { get; set; } = [];

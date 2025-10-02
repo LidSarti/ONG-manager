@@ -57,5 +57,5 @@ app.MapControllerRoute(
     pattern: "{controller=CadastroUsuarios}/{action=Index}")
     .WithStaticAssets();
 
-app.Run();
+await app.RunAsync();
 

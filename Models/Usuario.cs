@@ -6,10 +6,10 @@ public class Usuarios
 {
     [Key]
     [Required]
-    public int id { get; set; }
+    public int id { get; set; } = 0;
 
     [Required]
-    public int nivel { get; set; }
+    public int nivel { get; set; } = 0;
 
     [Required]
     [StringLength(200)]
