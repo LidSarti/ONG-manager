@@ -21,13 +21,11 @@ jobs:
     - name: Push para o Docker Hub
       run: docker push ${{ secrets.DOCKER_USERNAME }}/ong-manager:latest
 
-    - name: Deploy para Railway
-      run: |
-        curl -X POST https://backboard.railway.app/deploy/webhook/docker \
-        -H "Content-Type: application/json" \
-        -d '{
-          "projectId": "${{ secrets.RAILWAY_PROJECT_ID }}",
-          "serviceName": "${{ secrets.RAILWAY_PROJECT_NAME }}",
-          "dockerImage": "${{ secrets.DOCKER_USERNAME }}/ong-manager:latest"
-        }' \
-        -H "Authorization: Bearer ${{ secrets.RAILWAY_DEPLOY_TOKEN }}"
+    - name: Instalar Railway CLI
+      run: npm install -g railway
+
+    - name: Login Railway
+      run: railway login --token ${{ secrets.RAILWAY_DEPLOY_TOKEN }}
+
+    - name: Deploy
+      run: railway up --project ${{ secrets.RAILWAY_PROJECT_ID }}
