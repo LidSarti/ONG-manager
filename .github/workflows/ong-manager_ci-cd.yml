@@ -27,7 +27,7 @@ jobs:
         -H "Content-Type: application/json" \
         -d '{
           "projectId": "${{ secrets.RAILWAY_PROJECT_ID }}",
-          "serviceName": "web",  # Altere se seu serviço tem outro nome
+          "serviceName": "${{ secrets.RAILWAY_PROJECT_NAME }}",
           "dockerImage": "${{ secrets.DOCKER_USERNAME }}/ong-manager:latest"
         }' \
         -H "Authorization: Bearer ${{ secrets.RAILWAY_DEPLOY_TOKEN }}"
