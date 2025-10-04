@@ -20,20 +20,3 @@ jobs:
 
     - name: Push para o Docker Hub
       run: docker push ${{ secrets.DOCKER_USERNAME }}/ong-manager:latest
-
-  deploy: 
-    runs-on: ubuntu-latest
-
-    steps:
-    - name: Instalar Railway CLI
-      run: npm install -g @railway/cli
-
-    - name: Conectar no Railway
-      env:
-          RAILWAY_API_TOKEN: ${{ secrets.RAILWAY_DEPLOY_TOKEN }}
-      run: railway link -p ${{ secrets.RAILWAY_PROJECT_ID }}
-      
-    - name: Deploy no Railway
-      env:
-        RAILWAY_API_TOKEN: ${{ secrets.RAILWAY_DEPLOY_TOKEN }}
-      run: railway up --service ong-manager
